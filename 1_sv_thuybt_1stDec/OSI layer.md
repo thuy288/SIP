@@ -39,3 +39,6 @@ là một mô hình căn bản về các tiến trình truyền thông gồm có
                                   - modulation: analog to digital or digital to analog 
 -----------------------  Symbol -------------------------------------------------------
 ```
+
+# Ví dụ cụ thể
+
