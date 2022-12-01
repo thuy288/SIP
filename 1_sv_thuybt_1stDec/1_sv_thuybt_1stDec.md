@@ -39,7 +39,7 @@ Các dòng sau sẽ gồm các trường: Via, To, From, Call-ID, CSeq, ... (s�
 # 4. Cấu trúc của một SIP Protocol 
     SIP là cấu trúc lớp, nghĩa là các giao thức sẽ được thiết lập theo các mục đích của từng lớp.
      Lớp thấp nhất là **syntax và encoding**: 
-     Lớp thứ hai là **transport layer**: nó xác định cách là client gửi requests và nhận responses và server        nhận requests và gửi responses qua mạng. Khi một kết nối được mở bởi transport layer, thì index sẽ được        set thành destination IP, port và transport, còn khi được chấp nhận bởi transport layer thì index sẽ được      set thành source IP, port number và transport. 
+     Lớp thứ hai là **transport layer**: nó xác định cách là client gửi requests và nhận responses và server nhận requests và gửi responses qua mạng. Khi một kết nối được mở bởi transport layer, thì index sẽ được set thành destination IP, port và transport, còn khi được chấp nhận bởi transport layer thì index sẽ được set thành source IP, port number và transport. 
      Lớp thứ ba là **transaction layer**: được gửi bởi một client (sử dụng transport layer) cho server. 
      Lớp cuối cùng là: **transaction user** :
     
