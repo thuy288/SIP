@@ -41,4 +41,52 @@ là một mô hình căn bản về các tiến trình truyền thông gồm có
 ```
 
 # Ví dụ cụ thể
+Khi một người dùng yêu cầu truy cập trang web https://wikipedia.org/, trình duyệt sẽ gọi tới máy chủ DNS để biên dịch URL trang web thành một địa chỉ IP, mỗi trang web có địa chỉ IP riêng biệt. Địa chỉ IP của trang web sẽ được trả về cho trình duyệt.
+Đầu tiên, trang web sẽ truy vấn tới trình xử lý giao thức HTTP trong tầng thứ 7 - Application layer. Sau khi Application layer nhận ra đây là một truy vấn sử dụng kênh an toàn, nó sẽ chuyển tới thư viện TLS (transport Layer Security) tại tầng 5 và 6 và Session là Presentation layer. Thư viện TLS thiết lập một kết nối tới đích. Nó chuyển tới cho TCP - giao thức nằm ở tầng 4 (Transport). 
+Trình xử lý TCP nhận truy vấn kết nối và tạo ra gói tin với cờ "SYN" và chuyển đến tầng 3 (Network). 
+Tầng network nhận gói tin và thêm header có thông tin IP vào gói tin (giúp cho router biết cách định tuyến gói tin đến đúng địa chỉ đích)
+Sau đó, chuyển tiếp dến tầng 2 (Data-link). Data-link layer sẽ thêm địa chỉ MAC của bộ định tuyến, cho phép bộ định tuyến gửi gói tin ra ngoài internet
+Sau đó gói tin được chuyển tới tầng 1 (Physical layer): gói tin từ dạng nhị phân mã hóa vật lý để truyền tải trên cáp mạng - hay đặt nó lên Wifi - và bắt đầu chuyển đi qua mạng cục bộ và internet. 
+*Khi đến được máy chủ đích, toàn bộ quá trình sẽ được thực hiện ngược lại với quá trình bên trên*
+
+# Router, Switch
+## Router
+Bộ định tuyến là thiết bị mạng máy tính dùng để chuyển các gói dữ liệu qua cùng một liên mạng và đến các đầu cuối, thông qua một tiến trình gọi là định tuyến. Hoạt động ở tầng thứ 3 trong mô hình OSI (Network layer).
+Router có vai trò kết nối 2 mạng trở lên với nhau (Thông thường là 2 mạng LANs hay WANs hoặc kết nối 1 mạng LANs với mạng ISP của nó). Router có chức năng gửi các gói dữ liệu mạng giữa 2 hoặc nhiều mạng, từ một tới nhiều điểm đích đến cuối cùng từ router. Chính vì vậy, vị trí của nó trong một mạng Internet là ở nơi có 2 mạng kết nối với nhau trở lên.
+
+Về cấu tạo, router thường bao gồm 1 hoặc nhiều cổng LAN và có thể bao gồm ăng-ten phát tín hiệu wifi. Thông thường, chúng ta sẽ sử dụng router để kết nối máy tính của mình với mạng internet (sử dụng dây mạng từ cổng LAN) hoặc sử dụng các thiết bị của mình bắt tín hiệu wifi do router phát ra.
+Router sử dụng phần headers trong các gói tin để có thể xác định đường đi nhanh nhất cho các packet (đơn vị đo dữ liệu ở tầng mạng - Network Layer) từ host này đến với các host khác.
+## Switch
+Switch (thiết bị chuyển mạch) là một thiết bị dùng để kết nối các đoạn mạng với nhau theo mô hình mạng hình sao (star). Theo mô hình này, switch đóng vai trò là thiết bị trung tâm, tất cả các máy tính đều được nối về đây. Trong mô hình tham chiếu OSI, switch hoạt động ở tầng liên kết dữ liệu, ngoài ra có một số loại switch cao cấp hoạt động ở tầng mạng.
+Nói qua một chút về mạng thiết kế theo hình sao. Hiện nay đây là kiểu thiết kế mạng được sử dụng phổ biến. Phạm vi ứng dụng của mạng LAN thường được sử dụng để kết nối các máy tính trong gia đình, trong một phòng Game, phòng NET, trong một toà nhà của Cơ quan, Trường học.- Cự ly của mạng LAN giới hạn trong phạm vi có bán kính khoảng 100m, các máy tính có cự ly xa hơn thông thường người ta sử dụng mạng Internet để trao đổi thông tin. Mạng có các ưu điểm như tốc độ cao, một máy hỏng không gây ảnh hưởng đến kết nối mạng của các máy còn lại.
+
+Switch quyết định chuyển frame dựa trên địa chỉ MAC, do đó nó được xếp vào thiết bị Lớp 2. Chính nhờ Switch có khả năng lựa chọn đường dẫn để quyết định chuyển frame nên mạng LAN có thể hoạt động hiệu quả hơn.
+Switch nhận biết máy nào kết nối với cổng của nó bằng cách học địa chỉ MAC nguồn trong frame mà nó nhận được. Khi hai máy thực hiện liên lạc với nhau. Switch chỉ thiết lập một mạch ảo giữa hai cổng tương ứng mà không làm ảnh hưởng đến lưu thông trên các cổng khác. Do đó, mạng LAN có hiệu suất hoạt động cao thường sử dụng chuyển mạch toàn bộ.
+
+Switch tập trung các kết nối và quyết định chọn đường dẫn để truyền dữ liệu hiệu quả. Frame được chuyển mạch từ cổng nhận vào đến cổng phát ra. Mỗi cổng là một kết nối cung cấp chọn băng thông cho host.
+
+Trong Ethernet Hub, tất cả các cổng kết nối vào một mạng chính, hay nói cách khác, tất cả các thiết bị kết nối Hub sẽ cùng chia sẻ băng thông mạng. Nếu có hai máy trạm được thiết lập phiên kết nối thì chúng sẽ sử dụng một lượng băng thông đáng kể và hoạt động của các thiết bị còn lại kết nối vào Hub sẽ bị giảm xuống.
+Để giải quyết tình trạng trên, Switch xử lý mỗi cổng là một đoạn mạng (segment) riêng biệt. Khi các máy ở các cổng khác nhau cần liên lạc với nhau, Switch sẽ chuyển frame từ cổng này sang cổng kia và đảm bảo cung cấp chọn băng thông cho mỗi phiên kết nối.
+## Hub
+Hub là một điểm kết nối trung tâm cho tất cả các thiết bị khác trong mạng kết nối đến (Giống switch). Hub kết nối các segments của một mạng LAN
+Một hub nối nhiều máy tính (hoặc thiết bị mạng khác) với nhau để tạo thành một mạng phân khúc duy nhất trong trung tâm hệ thống.
+
+Trên đoạn mạng này, tất cả các máy tính có thể giao tiếp trực tiếp với nhau. Ethernet hub là các loại phổ biến nhất, các trung tâm với nhiều loại khác của mạng cùng tồn tại.
+
+Một trung tâm bao gồm một loạt các cổng chấp nhận mỗi một cáp mạng. mạng Hub nhỏ thường chứa bốn cổng kết nối. Chúng chứa 4 hoặc đôi khi 5 cổng, và một cổng được dành cho "uplink" kết nối tới một hub hoặc thiết bị tương tự. Trung tâm lớn hơn chứa 8, 12, 16, và thậm chí cả 24 cổng..
+
+# Giao thức ARP
+Address Resolution Protocol: là giao thức chịu trách nhiệm chuyển địa chỉ IP thành địa chỉ MAC hay dùng một địa chỉ IP (48 - bit) để tìm ra địa chỉ MAC (32 - bit). Mỗi thiết bị có một vùng nhỏ để lưu trữ địa chỉ IP và MAC được gọi là ARP cache. 
+# Quá trình 2 máy tính kết nối với nhau trong cùng một mạng LAN
+### host-to-host: 
+2 máy tính được kết nối bằng cap Ethernet và thiết bị chuyển mạch mạng, không có Gateway hoặc bộ định tuyến đứng giữa. Máy tính 1 có thể gửi một gói tin tới máy tính 2 thông qua DNS, nghĩa là máy tính 1 xác định rằng máy tính 2 có địa chỉ IP 192.168.0.55. Nó cũng cần xác định địa chỉ MAC của máy tính 2 bằng cách: Đầu tiên, nó sử dụng một bảng ARP lưu trữ để tìm kiếm địa chỉ 192.168.0.55 cho bất kỳ ghi nhận vào hiện có của địa chỉ MAC của máy tính 2> Lúc này sẽ có 2 trường hợp xảy ra:
+- MAC address được tìm thấy, ví dụ 00:eb:24:b2:05:ac chứa gói tin IP
+- ARP không có kết quả nào cho 192.168.0.55, máy tính 1 sẽ gửi một ARP broadcast (FF:FF:FF:FF:FF:FF) được chấp nhận bởi tất cả các máy tính trong LAN để yêu cầu địa chỉ 192.168.0.55 trả lời. Máy tính 2 sẽ trả lời với địa chỉ MAC và địa chỉ IP của nó. Máy tính 2 có thể ghi một mục vào bảng ARP của nó cho máy tính 1 để có thể sử dụng sau này. 
+### host to route: 
+Máy tính 1 và 2 thuộc 2 mạng cục bộ khác nhau. Máy tính 1 sẽ dùng bảng routing để tìm ra địa chỉ IP của router, rồi từ đó tìm địa chỉ MAC. 
+### router to router
+Router dùng bảng router để tìm ra địa chỉ IP của router trên cùng LAN, rồi từ đó tìm địa chỉ MAC
+### router to host
+Trong tường hợp này địa chỉ IP biết được qua địa chỉ IP của điểm đến trên gói tin gửi, router chỉ cần tìm địa chỉ MAC. 
+# Quá trình 2 máy tính kết nối với nhau ngoài mạng LAN
 
