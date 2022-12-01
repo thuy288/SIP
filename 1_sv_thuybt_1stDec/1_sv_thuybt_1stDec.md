@@ -22,18 +22,18 @@ Example: Bob's SIPS URI: sip:bob@biloxi.com, Alice's SIPS URI: sip:alice@atlanta
 ## SIP dựa trên model HTTP - request/response
 Nghĩa là trong mỗi một bản tin thì đều có các thông tin cụ thể về method, function ở server và ít nhất là có một response trả về. 
 
-## Cấu trúc của một bản in INVITE
-Example: Bản tin INVITE từ Alice request tới Bob
-    1  INVITE sip:bob@biloxi.com SIP/2.0
-    2  Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bK776asdhds
-    3  Max-Forwards: 70
-    4  To: Bob <sip:bob@biloxi.com>
-    5  From: Alice <sip:alice@atlanta.com>;tag=1928301774
-    6  Call-ID: a84b4c76e66710@pc33.atlanta.com
-    7  CSeq: 314159 INVITE
-    8  Contact: <sip:alice@pc33.atlanta.com>
-    9  Content-Type: application/sdp
-   10  Content-Length: 142
+## Cấu trúc của một bản in INVITE  
+Example: Bản tin INVITE từ Alice request tới Bob  
+    1  INVITE sip:bob@biloxi.com SIP/2.0  
+    2  Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bK776asdhds  
+    3  Max-Forwards: 70  
+    4  To: Bob <sip:bob@biloxi.com>  
+    5  From: Alice <sip:alice@atlanta.com>;tag=1928301774  
+    6  Call-ID: a84b4c76e66710@pc33.atlanta.com  
+    7  CSeq: 314159 INVITE  
+    8  Contact: <sip:alice@pc33.atlanta.com>  
+    9  Content-Type: application/sdp  
+   10  Content-Length: 142  
 Ở dòng đầu tiên: *INVITE sip:bob@biloxi.com SIP/2.0*. Tên method + SIPS URI + SIP/<version>
 Các dòng sau sẽ gồm các trường: Via, To, From, Call-ID, CSeq, ... (sẽ được nói cụ thể ở phần sau)
 # 4. Cấu trúc của một SIP Protocol 
