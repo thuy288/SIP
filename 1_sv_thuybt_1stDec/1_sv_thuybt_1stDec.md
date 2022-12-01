@@ -8,6 +8,18 @@ SIP hoạt động với các giao thức bằng các điểm đầu cuối tron
 -	Sesion management: gồm vận chuyển và chấm dứt phiên, sửa parameters của phiên, các dịch vụ gọi.
 SIP hoạt động ở cả Ipv4 và Ipv6
 # 2.	Cấu trúc chung
-Ví dụ: trao đổi SIP message giữa 2 người dùng là Alice và Bob 
+Ví dụ: trao đổi SIP message giữa 2 người dùng là Alice và Bob. Alice sử dụng SIP identity của Bob và Uniform Resource Identifier (URI - SIP URI)
 
+## SIP URI
+bao gồm thông tin ban đầu và duy trì phiên với các resource, ví dụ: 
+- dịch vụ online
+- trường hợp multi-line phone
+- một mailbox 
+- một số PSTN trong một cổng dịch vụ
+- một nhóm (sales, helpdesk) trong một tổ chức
+Example: Bob's SIPS URI: sip:bob@biloxi.com, Alice's SIPS URI: sip:alice@atlanta.com
+
+## SIP dựa trên model HTTP - request/response
+Nghĩa là trong mỗi một bản tin thì đều có các thông tin cụ thể về method, function ở server và ít nhất là có một response trả về. 
+Ví dụ: khi Alice 
 
