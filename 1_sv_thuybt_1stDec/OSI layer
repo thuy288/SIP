@@ -1,0 +1,41 @@
+# Open Systems Interconnection model 
+là một mô hình căn bản về các tiến trình truyền thông gồm có 7 layer
+```
+--------------------------------------------------------------------------------------
+|  Application         |        | Tầng ứng dụng: xác định giao diện người sử dụng và môi trường OSI. 
+                       |        |  Là nơi người dùng tương tác với chương trình ứng dụng, và qua đó với mạng. 
+                       |        | Một số ví dụ về tầng này bao gồm HTTP, Telnet, FTP, SMTP, IMAP
+-----------------------|        -------------------------------------------------------
+|  Presentation        |        | Tầng trình diễn: như tầng dữ liệu. Nhiệm vụ dịch dữ liệu được gửi từ tầng application
+                       |        |
+                       | Data       |sang định dạng chung. Ngược lại, ở máy tính nhận thì sẽ chuyển từ định dạng chung sang 
+                       |        | định dạng của tầng application. Cụ thể:
+                       |        | - Dịch từ ASCII -> EBCDIC
+                       |        | - integer -> dấu phẩy động
+                       |        | - nén dữ liệu
+                       |        | - encoding và decoding để đảm bảo sự bảo mật
+------------------------        -------------------------------------------------------
+|  Session             |        | Tầng phiên: 
+---------------------------------------------------------------------------------------
+|  Transport           |segment,| Tầng vận chuyển: chuyển dữ liệu giữa các người dùng end-to-end, tầng này là nơi
+                        Datagram  chuyển các ứng dụng thành TCP hay UDP
+---------------------------------------------------------------------------------------
+|  Network             | packet | Tầng mạng: truyền các chuỗi dữ liệu từ một nguồn tới một đích, thông qua một hoặc
+                                  nhiều mạng. Thực hiện chứng năng định tuyến, các thiết bị định tuyến (router), 
+                                  chuyển mạch (switch) hoạt động tại tầng này
+-----------------------         -------------------------------------------------------
+|  Data-link           | Frame  | Tầng liên kết dữ liệu: quy trình truyền dữ liệu giữa các thực thể mạng, phát hiện
+                                  và sửa lỗi trong tầng Physical nếu có. Nó xác định giao thức để thiết lập hoặc kết thúc 
+                                  kết nối giữa 2 thiết bị vật lý. IEEE 802 chia datalink layer thành 2 layer nhỏ hơn:
+                                  - Medium access control (MAC) layer - kiểm soát thiết bị trong mạng có quyền truy cập
+                                  vào các phương tiện và quyền truy cập dữ liệu
+                                  - Logical link control (LLC) layer - xác định và đóng gói các giao thức lớp mạng,
+                                  đồng thời kiểm tra lỗi và đồng bộ hóa.                                   
+-----------------------         -------------------------------------------------------
+|  Physical            | Bit,   | Tầng vật lý: về điện và vật lý cho các thiết bị: chân cắm, hiệu điện thế, cáp nối
+                                  các thiết bị tầng vật lý: HUb, repeater, converter, network adapter, Host bus adapter
+                                  Chức năng:
+                                  - electrical connection: thiết lập hoặc ngắt mạch kết nối điện
+                                  - modulation: analog to digital or digital to analog 
+-----------------------  Symbol -------------------------------------------------------
+```
