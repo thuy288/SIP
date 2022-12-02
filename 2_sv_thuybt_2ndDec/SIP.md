@@ -39,5 +39,41 @@
     **Tạo request**: các trường sau cần phải có: To, From, CSeq, Call-ID, Max-Forwards, Via
    * **To**: may contain SIP or SIPS URI là nơi là nó muốn request tới. 
    * **From**: contains a URI and optionally a display name. "tag" được sử dụng trong trường To và From của SIP messages. Nó dùng để xác định dialog. Khi UA gửi request ra ngoài dialog, nó sẽ có tag duy nhất trong trường From. Khi tag được insert vào request hoặc response thì nó là duy nhất là được tạo ra từ việc random ít nhất 32 ký tự. UA sẽ thay thế different tag vào From của một bản tin INVITE hơn và thay thế vào trường To cả response trong same INVITE. 
-   * **Call-ID**: unique identitier để tạo thành 1 nhóm series o message. Nó sẽ gipoongs cho cả requests và responses gửi bởi UA trong 1 dialog. 
-
+   * **Call-ID**: unique identitier để tạo thành 1 nhóm series của message. Nó sẽ giống cho cả requests và responses gửi bởi UA trong 1 dialog. 
+   Example: 
+**INVITE sip:0398765432100;phone-context=0498765432100@0498765432100;user=phone SIP/2.0**  
+Record-Route: <sip:mo@10.4.128.21:6101;lr=on;ftag=7b3fae13;rm=8;did=078.654>  
+Via: SIP/2.0/UDP 10.4.128.21:6101;branch=z9hG4bK7a83.64fb9469779e2867fdb139eecff6c335.0  
+Via: SIP/2.0/UDP 192.168.101.3:6400;received=192.168.101.3;branch=z9hG4bK-524287-1---b67029e8d52ecffc;rport=6401;transport=UDP  
+Max-Forwards: 69  
+Route: <sip:orig@scscf.ims.mnc001.mcc001.3gppnetwork.org:6060;lr>  
+Contact: <sip:0498765432100@192.168.101.3:6400;alias=192.168.101.3~6401~1>;+sip.instance="<urn:gsma:imei:35622410-483317-0>";+g.3gpp.icsi-ref="urn%3Aurn-7%3A3gpp-service.ims.icsi.mmtel";+g.3gpp.mid-call;+g.3gpp.srvcc-alerting;+g.3gpp.ps2cs-srvcc-orig-pre-alerting;video  
+To: <sip:0398765432100;phone-context=0498765432100@0498765432100;user=phone>  
+From: <tel:0498765432100>;tag=7b3fae13  
+**Call-ID: TF0lR-e_t0o7Jp-w5kq58A..@192.168.101.3**  
+CSeq: 1 INVITE  
+...
+  
+**SIP/2.0 100 Trying**  
+Via: SIP/2.0/UDP 10.4.128.21:6101;branch=z9hG4bK7a83.64fb9469779e2867fdb139eecff6c335.0  
+Via: SIP/2.0/UDP 192.168.101.3:6400;received=192.168.101.3;branch=z9hG4bK-524287-1---b67029e8d52ecffc;rport=6401;transport=UDP  
+To: <sip:0398765432100;phone-context=0498765432100@0498765432100;user=phone>  
+From: <tel:0498765432100>;tag=7b3fae13  
+**Call-ID: TF0lR-e_t0o7Jp-w5kq58A..@192.168.101.3**  
+CSeq: 1 INVITE  
+Server: Kamailio S-CSCF  
+Content-Length: 0  
+    
+    Trong cả bản tin INVITE và 100 Trying thì đều có Call-ID giống nhau. 
+   * **CSeq** 
+    là một cách để xác định và sắp xếp transactions. Nó bao gồm một sequence number và một method (method này là method của request đó). Sequence number bắt buộc phải là một số nguyên 32-bit là phải nhỏ hơn 2**31. 
+    Example: CSeq: 1 INVITE
+   * **Max-Forward**
+    để giới hạn số lượng của 1 hops request có thể transit tới đích. Nó bao gồm một số nguyên mà sẽ giảm 1 sau mỗi hop. Nếu nó giảm đến 0 trước khi xong các bản tin với đích thì nó sẽ kết thúc với error response 483 (Too many hops). Cụ thể, một UAC phải insert a trường Max-Forwards vào mỗi request và bắt đầu từ giá trị 70. 
+    Example: Max-Forwards: 69
+   * **Via**
+    dùng để xác định phương tiện vận chuyển được sử dụng cho giao dịch và xác định vị trí gửi response. Trường Via chỉ được thêm vào sau khi phương tiện truyền tải sẽ được sử dụng để đến chặng tiếp theo đã được chọn. Khi UAC tạo request, nó cần phải insert một trường Via vào request đó. Cấu trúc gồm tên protocol và version, branch parameter (xác định giao dịch tạo bởi request đó, sử dụng bởi cả client và server).
+    Example: Via: SIP/2.0/UDP 192.168.101.3:6400;received=192.168.101.3;branch=z9hG4bK-524287-1---b67029e8d52ecffc;rport=6401;transport=UDP
+    Trong ví dụ trên, message đó bắt nguồn từ 1 địa chỉ là  192.168.101.3
+    
+    
