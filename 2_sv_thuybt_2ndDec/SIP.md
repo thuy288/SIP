@@ -37,6 +37,7 @@
 
 # 5. UAC Behavior
     **Tạo request**: các trường sau cần phải có: To, From, CSeq, Call-ID, Max-Forwards, Via
-   * **To**: contain SIP or SIPS URI 
-    
+   * **To**: may contain SIP or SIPS URI là nơi là nó muốn request tới. 
+   * **From**: contains a URI and optionally a display name. "tag" được sử dụng trong trường To và From của SIP messages. Nó dùng để xác định dialog. Khi UA gửi request ra ngoài dialog, nó sẽ có tag duy nhất trong trường From. Khi tag được insert vào request hoặc response thì nó là duy nhất là được tạo ra từ việc random ít nhất 32 ký tự. UA sẽ thay thế different tag vào From của một bản tin INVITE hơn và thay thế vào trường To cả response trong same INVITE. 
+   * **Call-ID**: unique identitier để tạo thành 1 nhóm series o message. Nó sẽ gipoongs cho cả requests và responses gửi bởi UA trong 1 dialog. 
 
