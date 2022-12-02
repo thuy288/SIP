@@ -36,7 +36,7 @@ Example: Bản tin INVITE từ Alice request tới Bob
    10  Content-Length: 142  
 Ở dòng đầu tiên: *INVITE sip:bob@biloxi.com SIP/2.0*. Tên method + SIPS URI + SIP/<version>
 Các dòng sau sẽ gồm các trường: Via, To, From, Call-ID, CSeq, ... (sẽ được nói cụ thể ở phần sau)
-# 4. Cấu trúc của một SIP Protocol 
+# 3. Cấu trúc của một SIP Protocol 
     SIP là cấu trúc lớp, nghĩa là các giao thức sẽ được thiết lập theo các mục đích của từng lớp.
      Lớp thấp nhất là **syntax và encoding**: 
      Lớp thứ hai là **transport layer**: nó xác định cách là client gửi requests và nhận responses và server nhận requests và gửi responses qua mạng. 
