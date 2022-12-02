@@ -36,5 +36,7 @@
     6xx: Global error: 506 Busy Everywhere, 603 Decline
 
 # 5. UAC Behavior
-    **Tạo request**
+    **Tạo request**: các trường sau cần phải có: To, From, CSeq, Call-ID, Max-Forwards, Via
+   * **To**: 
+    
 
