@@ -37,6 +37,6 @@
 
 # 5. UAC Behavior
     **Tạo request**: các trường sau cần phải có: To, From, CSeq, Call-ID, Max-Forwards, Via
-   * **To**: 
+   * **To**: contain SIP or SIPS URI 
     
 
