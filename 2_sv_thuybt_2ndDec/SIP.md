@@ -75,6 +75,4 @@ Content-Length: 0
     dùng để xác định phương tiện vận chuyển được sử dụng cho giao dịch và xác định vị trí gửi response. Trường Via chỉ được thêm vào sau khi phương tiện truyền tải sẽ được sử dụng để đến chặng tiếp theo đã được chọn. Khi UAC tạo request, nó cần phải insert một trường Via vào request đó. Cấu trúc gồm tên protocol và version, branch parameter (xác định giao dịch tạo bởi request đó, sử dụng bởi cả client và server).
     Example: Via: SIP/2.0/UDP 192.168.101.3:6400;received=192.168.101.3;branch=z9hG4bK-524287-1---b67029e8d52ecffc;rport=6401;transport=UDP
     Trong ví dụ trên, message đó bắt nguồn từ 1 địa chỉ là  192.168.101.3, giao thức là UDP 
-   * **Contact** 
-    cung cấp một SIP hoặc SIPS URI cái mà có thể được sử dụng bởi một contact 
     
