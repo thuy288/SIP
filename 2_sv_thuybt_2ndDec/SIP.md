@@ -20,6 +20,21 @@
    ### Registrar
    nhận bản tin SIP register và cập nhật các thông tin mà user agents cung cấp từ bản tin register vào location database. 
 # 4. Some Definitions
-- SIP message is er a reqeust from a client to a server, or a response from a server to a client.
-- 
+- SIP message is either a request from a client to a server, or a response from a server to a client.
+- Requests: phân biệt dựa trên Request-line
+            Cấu trúc của Request-line: <method name> <request-URI>  <protocol version>
+            Example: sip:bob@biloxi.com SIP/2.0
+            - Method: REGISTER, INVITE, ACK, CANCEL, BYE
+            - Request-URI: is a SIP or SIPS URI 
+- Responses: phân biệt dựa trên requests bởi Status-line = SIP_version SP Status_code Reasion_Phrase CRLF
+    Status-Code: là một số nguyên gồm 3 chữ số, với chữ số đầu tiên là class của response
+    1xx: provisional - request received : 100 trying, 180 Ringing, ...
+    2xx: Success: 200 OK, 202 Accepted
+    3xx: Redirection: 300 Multiple choices, 301 Moved Permanently
+    4xx: Client error: 407 Proxy Authentication Required, 408 Request Timeout
+    5xx: Server error: 500 server internal Error, 501 Not Implemented ,..
+    6xx: Global error: 506 Busy Everywhere, 603 Decline
+
+# 5. UAC Behavior
+    **Tạo request**
 
