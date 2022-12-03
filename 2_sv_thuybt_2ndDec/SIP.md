@@ -3,7 +3,8 @@
 Syntax và Encoding
 -------------------|
 Transport layer    |
-Transaction layer 
+Transaction layer  |
+Transaction user
 
 
     SIP là cấu trúc lớp, nghĩa là các giao thức sẽ được thiết lập theo các mục đích của từng lớp.
