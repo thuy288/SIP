@@ -1,5 +1,11 @@
 *Tiếp ngày hôm trước*
 # 3. Cấu trúc của một SIP Protocol 
+Syntax và Encoding
+-------------------|
+Transport layer    |
+Transaction layer 
+
+
     SIP là cấu trúc lớp, nghĩa là các giao thức sẽ được thiết lập theo các mục đích của từng lớp.
      Lớp thấp nhất là **syntax và encoding**: 
      Lớp thứ hai là **transport layer**: nó xác định cách là client gửi requests và nhận responses và server nhận requests và gửi responses qua mạng. 
