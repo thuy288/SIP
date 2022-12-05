@@ -3,7 +3,8 @@ Port từ 2014 tới 49151: User or Registered port là một network port
 Port từ 49515 tới 655: Dynamic ports - private ports   
 
 # Asumptions
-- two Linux systems
+- two Linux systems![205649681-5a3f6c43-08ec-418c-a589-ed7141ce6929](https://user-images.githubusercontent.com/101868484/205697557-b13f1a72-1c18-4774-be0c-33d72e105a47.png)
+
 - Python3 should be installed
 - able to ping each other 
 - One system should act as Server and other system should act as clientat one particular time.
@@ -32,8 +33,12 @@ File has been copied successfully
 Server closed the connection
 ```
 **Step 8:** There should be one file name recv.txt at server folder. The content recv.txt ~ sample.txt   
--> successfully copied 
+-> successfully copied  
 
+Server:
+![image](https://user-images.githubusercontent.com/101868484/205697625-3553933f-9657-4c9d-b322-8f820d15f473.png)
+Client: 
+![image](https://user-images.githubusercontent.com/101868484/205697802-7c5ee419-0b5c-4fe9-96c0-050179a731f1.png)
 
 
 
