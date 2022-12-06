@@ -4,4 +4,10 @@ SIP protocol có một thành phần gọi là REGISTRAR, nó là máy chủ ch�
 Location database lưu lại các thông tin 
 ![317841359_875754330403070_5599846798681077280_n](https://user-images.githubusercontent.com/101868484/205807671-38081c24-2c88-4372-a62c-ed0b09cbaae3.jpg)
 
-
+# OpenSIPS
+Là một open source SIP proxy server 
+- Speed: nó có thể handle rất nhiều cuộc gọi trong mỗi giây
+- Flexibility: Script language to define the administrators's behavior. 
+- Portability: được viết trong ANSI C -> portable and available to UNIX-like systems such as Linux, Solaris, and BSD
+- Small footprint: dung lượng core nhỏ nên sử dụng được ở nhiều nền tảng nhúng
+- 
