@@ -9,3 +9,19 @@ Request-URI xác định UAS xử lý yêu cầu. Khác với header To thì Req
 - Request-URI không xác định địa chỉ mà UAS đã có thể chấp nhận request, nó nên reject request đó với response 404 (Not Found). 
 - Thông thường một UA sử dụng REGISTER method để liên két AOR tới một contact cụ thể sẽ thấy các yêu cầu mà Request-URI ~ contact address.
 - Request-URI gồm có header **Contact** của requests và responses gửi bởi UA để thiết lập hoặc làm mới dialogs.
+# Merged Requests
+Nếu header To không có tag, UAS phải kiểm tra request các transactions đang diễn ra. 
+Nếu From tag, Call-ID, và CSeq giống nhau trong transaction đang diễn ra, nhưng request lại không giống nhau
+-> UAS sẽ tạo ra 482 (Loop Detected) response và gửi nó tới server transaction. 
+# Require
+Header **Require** được sử dụng bởi UAC để nói với UAS về UAC muốn UAS support xử lý các request. Require header gồm một list những option tag.  Mỗi option tag định nghĩa một SIP extension mà phải được hiểu khi xử lý request. 
+Nếu UAS không hiểu option tag nào đó thì nó sẽ trả về response 420 (Bad Extension). UAS phải thêm một Unsupported heade
+Require và Proxy-Require không được sử dụng trong SIP CANCEL request, hoặc trong một ACK request gửi cho một non-2xx response (Những header đó sẽ bị ignored nếu nó xuất hiện trong request)
+Example: 
+      UAC->UAS:   INVITE sip:watson@bell-telephone.com SIP/2.0
+                  Require: 100rel
+
+      UAS->UAC:   SIP/2.0 420 Bad Extension
+                  Unsupported: 100rel
+                  
+# Content Processing
