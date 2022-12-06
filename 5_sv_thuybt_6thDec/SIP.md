@@ -25,3 +25,12 @@ Example:
                   Unsupported: 100rel
                   
 # Content Processing
+Nếu có bất kỳ thành phần nào: Content-Type, Content-Language, Content-Encoding mà UAS không hiểu được thì nó sẽ phải reject với một 415 response (Unsopported media Type). Trong response đó cần phải có **Accept** header. Nếu request có thành phần nào mà không được hiểu bởi UAS thì response sẽ phải có header tương tự: 
+Example: content encodings - Accept-Encoding
+         contnet with language - Accept-Language
+# Applying extensions
+Nếu UAS muốn apply extension nào đó thì nó sẽ gửi response 421 (Extension Required). Và trong response đó cần phải có Require header.
+# Processing the Request
+Giả sử các phần trên đều passed thì UAS xử lý trở thành method-specific. 
+## Processing REGISTER Requests
+
