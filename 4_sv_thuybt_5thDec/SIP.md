@@ -14,7 +14,7 @@ Khi request được xác thực (hoặc xác thực bị bỏ qua), UAS phải 
 Quá trình tạo phản hồi như sau:
 - Sending a Provisional Response: UAS nên tại phản hồi cuối tới non-INVITE request nhanh nhất có thể. Khi 100 Trying được tạo, bất kỳ trường Timestamp trong request cần phải copy vào 100 Trying đó. Nếu có thời gian delay thì UAS nên thêm giá trị delay vào giá trị Timestamp. 
 - Headers and Tags: Trường **From** của response và request phải giống nhau. Trường **Call-ID, CSeq, Via** ở response = request. Nếu một request có một To tag thì trường **To** trong response = request. Tuy nhiên, nếu trường To ở request không có tag thì URI trong trường To ở response = URI trong trường **To** trong response.   
-UAS cxung phải thêm một trường Allow vào phản hồi 405. Trường Allow sẽ phải gồm danh sách các methods hỗ trợ bởi UAS tạo ra message đó.   
+UAS cũng phải thêm một trường Allow vào phản hồi 405. Trường Allow sẽ phải gồm danh sách các methods hỗ trợ bởi UAS tạo ra message đó.   
 **Allow**: Tất cả các methods, kể cả ACK và CANCEL, được hiểu bởi UA sẽ bao gồm trong list các method của trường Allow  
 Example: 
 ```
