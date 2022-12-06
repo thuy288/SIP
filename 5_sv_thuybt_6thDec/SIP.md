@@ -33,4 +33,12 @@ Nếu UAS muốn apply extension nào đó thì nó sẽ gửi response 421 (Ext
 # Processing the Request
 Giả sử các phần trên đều passed thì UAS xử lý trở thành method-specific. 
 ## Processing REGISTER Requests
+Các ví dụ về REGISTER request, INVITE request, BYE request sẽ được trình bày ở các chapter 11, 13 và 15. 
+# Generating the Response
+Khi UAS tạo một response tới một request, nó sẽ theo các bước sau.
+1. Sending a Provisional Response
+2. Headers and Tags
+Chi tiết đã được trình bày ở phần trước 
+# Stateless UAS Behavior
+
 
