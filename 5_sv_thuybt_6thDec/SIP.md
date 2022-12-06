@@ -1,4 +1,4 @@
-# Header Insprction
+# Header Inspection
 Nếu UAS không hiểu được header trong 1 request thì server sẽ bỏ qua header đó và tiếp tục quá trình message. Một UAS nên bỏ qua những header không đúng định dạng (tức là nó là những cái không cần thiết cho quá trình request)
 # To and Request-URI
 Header **To** xác định người nhận được chỉ định từ đầu (ví dụ là địa chỉ của người được gọi) bởi người dùng đã được xác định trong header **From**
