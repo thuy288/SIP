@@ -37,4 +37,10 @@ CANCEL request được sử dụng để cancel request trước đó được 
    Một stateful proxy có thể tạo CANCEL cho cho INVITE dựa trên *Expires* khi nó hết hạn. Proxy layer tìm kiếm contexts của proxy để server transaction xử lý CANCEL. Nếu context được tìm thấy thì sẽ return 200 OK response cho CANCEL request. 
 ## Client Behavior
             CANCEL request chỉ nên được gửi để hủy INVITE, vì các request khác thường sẽ phản hồi ngay thức thì, nếu hủy thì có thể tạo ra một race condition. 
-            Các header Request-URI, Call-ID, To, CSeq, From trong CANCEL cần phải giống với request sẽ bị hủy, kể cả tags. Và có duy nhất một *Via* header
+            Các header Request-URI, Call-ID, To, CSeq, From trong CANCEL cần phải giống với request sẽ bị hủy, kể cả tags. Và có duy nhất một *Via* header và *Via* header trên cùng trong request -> hủy đúng request. *CSeq* header thì phải là giá trị của CANCEL (đếm số lần CANCEL). 
+            Nếu ở request có *Route* header thì CANCEL cũng phải có *Route* header đó, để stateless proxy có thể hủy đúng request
+            CANCEL request thì không chứa *Require* hoặc *Proxy-Require* header. 
+            Nếu CANCEL không nhận được provisional response (1xx) thì sẽ không được gửi đi, nếu như request (muốn hủy) là nhận được final response thì CANCEL đó sẽ không được gửi đi và không ảnh hưởng tới request đó nữa. Nhưng nếu trong CANCEL có destination address, port, và transport như request thì nó cho phép server nhận CANCEL trước request ban đầu.
+            CANCEL và request ban đầu sẽ thực hiện independently, Tuy nhiên một UAC canceling không thể dựa vào việc nhận 487 (Request Terminated) response cho request ban đầu. Nếu như không có final response cho request ban đầu in 64*T1 (500ms) thì client nên hủy transaction ban đầu và hủy transaction với request ban đầu (em hiểu là lỗi không CANCEL được) 
+ ## Server Behavior
+ 
