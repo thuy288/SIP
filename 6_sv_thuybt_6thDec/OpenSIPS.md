@@ -1,3 +1,7 @@
+# OpenSIPS architecture
+get images from this link
+https://subscription.packtpub.com/book/networking-and-servers/9781785280610/2/ch02lvl1sec27/the-opensips-design
+
 # OpenSIPS configuration file 
 opensips.cfg: 
 ```
@@ -63,4 +67,25 @@ failure_route[missed_call] {					-----------------------------
 	##}	
 }
 ```
+OpenSIPS được xây dựng trên top của core chịu trách nhiệm cho những nhiệm vụ đơn giản và xử lý các SIp mesages.
+OpensSIPS modules cho thấy những nhiệm vụ bên trong OpenSIPS script được config trong file *opensips.cfg* \
+## Sections of the opensips.cfg file
+- GLobal definitions: gồm những thông số làm việc trong OpenSIPS như là IP:PORT for SIP service và debug level. Nó ảnh hướng tới OpenSIPS core và tất cả các modules \
+- Modules: gồm những thư viện bên trong được yêu cầu để thực hiện được những functions không có sẵn trong core. Được chạy với *loadmodule* \
+- Modules configuration: các thông số cần để thiết lập thích hợp sử dụng syntax: 
+  *modparam(modulename, parametername, parametervalue)* \
+- Main routing block: là nơi bắt đầu quá trình SIP request. Nó kiểm soát quá trình của mỗi SIP request nhận được. \
+- Secondary routing blocks: *route()* command nó giống như subroutines trong OpenSIPS script. \
+- REply routing blocks: xử lý các reply messages (provisional, successful final replies, negative final replies) như là 200 OK \
+- Failure routing blocks: xử lý các nguyên nhân dẫn đến thất bại như là: busy hoặc timeout \
+- Branch routing blocks: gồm những logix được thực thi cho mỗi branch của SIP request, trước khi chuyển tiếp nó đi \
+- Local routing blocks: thực thi khi OpenSIPS tạo một request (giống như UAS) sử dụng Transaction Module \
+- Error routing block: thực thi khi phát hiện lỗi cú pháp SIP request. 
+## Phân biệt sessions (phiên), dialogs (hộp thoại), transactions (giao dịch) 
+- SIP session: luồng media giữa hai thực thể SIP, ví dụ: audio, video, text \
+- SIP dialog: một mối liên hệ tồn tại giữa 2 thực thể SIP trong một khoảng thời gian, ví dụ: dialog được thiết lập giữa hai UAC từ bản tin INVITE đến bản tin BYE \
+- SIP transaction: là một SIP request gồm có request và response, ví dụ như REGISTER và 200 OK \ 
+## Stateful operation
+
+
 
