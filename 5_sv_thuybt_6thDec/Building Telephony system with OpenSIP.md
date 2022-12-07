@@ -8,6 +8,7 @@ Location database lưu lại các thông tin
 Là một open source SIP proxy server 
 - Speed: nó có thể handle rất nhiều cuộc gọi trong mỗi giây
 - Flexibility: Script language to define the administrators's behavior. 
+- OpenSIPS is exendable
 - Portability: được viết trong ANSI C -> portable and available to UNIX-like systems such as Linux, Solaris, and BSD
 - Small footprint: dung lượng core nhỏ nên sử dụng được ở nhiều nền tảng nhúng
-- 
+- Usage scenarios
