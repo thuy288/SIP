@@ -1,38 +1,36 @@
 # OpenSIPS configuration file 
 opensips.cfg: 
 ```
-####### Global Parameters #########
-debug=3
-log_stderror=no
+####### Global Parameters #########                             ----------------------------------
+debug=3								| Global Configuration Parameters |
+log_stderror=no							-----------------------------------
 fork=yes
 children=4
 ...
 ####### Modules Section ########
-
-#set module path
-mpath="/usr/local/lib64/opensips/modules/"
-#### SIGNALING module
+#set module path                                                -----------------
+mpath="/usr/local/lib64/opensips/modules/"           		| Module loading |
+#### SIGNALING module						-----------------
 loadmodule "signaling.so"
 ...
 #----------------setting module-specific parameters
-modparam("mi_fifo","fifo_name","/tmp/oprnsips_fifo")
-modparam("rr","enable_full_lr", 1)
-modparam("rr", "append_fromtag", 0)
+modparam("mi_fifo","fifo_name","/tmp/oprnsips_fifo")            ---------------------------
+modparam("rr","enable_full_lr", 1)				| MOdule Specific parameter |
+modparam("rr", "append_fromtag", 0)				----------------------------
 ...
 ####### Routing Logic ########
 # main request routing logic
-route{
-	if (!mf_process_maxfwd_header("10")) {
-		sl_send_reply("483","Too Many Hops");
+route{								---------------------------
+	if (!mf_process_maxfwd_header("10")) {  		|      Main routing block  |
+		sl_send_reply("483","Too Many Hops");		 --------------------------
 		exit;
 	}
 ...
 route[1] {
 	# for INVITEs enable some additional helper routes
-	if (is_method("INVITE")) {
-		
-			if (isflagset(NAT)) {
-			rtpproxy_offer("ro");
+	if (is_method("INVITE")) {                                    ----------------------		
+			if (isflagset(NAT)) {		              |    Routing blocks  |
+			rtpproxy_offer("ro");			      -----------------------
 		}
 		t_on_branch("per_branch_ops");
 		t_on_reply("handle_nat");
@@ -43,19 +41,19 @@ route[1] {
 	};
 	exit;
 }
-branch_route[per_branch_ops] {
-	xlog("new branch at $ru\n");
-}
+branch_route[per_branch_ops] {                     		---------------------------
+	xlog("new branch at $ru\n");				|   Branch route blocks   |
+}								---------------------------
 onreply_route[handle_nat] {
 	if (nat_uac_test("1"))
-		fix_nated_contact();
-	if ( isflagset(NAT) )
-		rtpproxy_answer("ro");
+		fix_nated_contact();				---------------------------
+	if ( isflagset(NAT) )					|   Reply routing blocks   |
+		rtpproxy_answer("ro");				---------------------------
 	xlog("incoming reply\n");
 }
-failure_route[missed_call] {
-	if (t_was_cancelled()) {
-		exit;
+failure_route[missed_call] {					-----------------------------
+	if (t_was_cancelled()) {				|   Failure routes blocks   |
+		exit;						-----------------------------
 	}
 	# uncomment the following lines if you want to block client 
 	# redirect based on 3xx replies.
