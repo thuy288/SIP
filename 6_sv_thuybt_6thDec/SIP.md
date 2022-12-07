@@ -9,20 +9,20 @@ Những điểm quan trọng của stateless UAS là:
 - *To* header tags phải được tạo cho response và có tag giống nhau cho các request giống nhau
 # Redirect Servers
 Nó cho phép server đẩy thông tin cho một request lại trong một response tới client
-            ----------------                          ------------------         ------------------------
-           |Redirect Server|   <--------------------->| Registrar      |         |    Proxy Serrver     |
-            ----------------                          ------------------         ------------------------
-                   |  2. Redirect server checks Location Service to find IP address of UAB 
-                   |  3. Redirect Server sends information back to the requestting UA
- 1. INVITE request |
-    is sent to     |  4. UAA sends invite to UAB
-    Redirect server|     ---------------------->
-                   |     <----------------------
-                   |  5. UAB responds to UAA
-                   |  
-            ----------------                           -----------------
-            |User Agent A   |   <--------------------> | User Agent B    |
-            ----------------                           -----------------
-                               6. Once invitation is accepted UAA and UAB 
-                                  can now establish a session
-Một redirect server bao gồm có transaction layer và một transaction user có quyền truy cập vào location service của registrars và location services. 
+            ----------------                          ------------------         ------------------------  
+           |Redirect Server|   <--------------------->| Registrar      |         |    Proxy Serrver     |  
+            ----------------                          ------------------         ------------------------  
+                   |  2. Redirect server checks Location Service to find IP address of UAB   
+                   |  3. Redirect Server sends information back to the requestting UA  
+ 1. INVITE request |  
+    is sent to     |  4. UAA sends invite to UAB  
+    Redirect server|     ---------------------->  
+                   |     <----------------------  
+                   |  5. UAB responds to UAA  
+                   |    
+            ----------------                           -----------------  
+            |User Agent A   |   <--------------------> | User Agent B    |  
+            ----------------                           -----------------  
+                               6. Once invitation is accepted UAA and UAB   
+                                  can now establish a session  
+Một redirect server bao gồm có transaction layer và một transaction user có quyền truy cập vào location service của registrars và location services.    
