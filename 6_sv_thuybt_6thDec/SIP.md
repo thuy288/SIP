@@ -36,11 +36,93 @@ CANCEL request được sử dụng để cancel request trước đó được 
 3. CANCEL bởi proxy 
    Một stateful proxy có thể tạo CANCEL cho cho INVITE dựa trên *Expires* khi nó hết hạn. Proxy layer tìm kiếm contexts của proxy để server transaction xử lý CANCEL. Nếu context được tìm thấy thì sẽ return 200 OK response cho CANCEL request. 
 ## Client Behavior
-            CANCEL request chỉ nên được gửi để hủy INVITE, vì các request khác thường sẽ phản hồi ngay thức thì, nếu hủy thì có thể tạo ra một race condition. 
-            Các header Request-URI, Call-ID, To, CSeq, From trong CANCEL cần phải giống với request sẽ bị hủy, kể cả tags. Và có duy nhất một *Via* header và *Via* header trên cùng trong request -> hủy đúng request. *CSeq* header thì phải là giá trị của CANCEL (đếm số lần CANCEL). 
-            Nếu ở request có *Route* header thì CANCEL cũng phải có *Route* header đó, để stateless proxy có thể hủy đúng request
-            CANCEL request thì không chứa *Require* hoặc *Proxy-Require* header. 
-            Nếu CANCEL không nhận được provisional response (1xx) thì sẽ không được gửi đi, nếu như request (muốn hủy) là nhận được final response thì CANCEL đó sẽ không được gửi đi và không ảnh hưởng tới request đó nữa. Nhưng nếu trong CANCEL có destination address, port, và transport như request thì nó cho phép server nhận CANCEL trước request ban đầu.
-            CANCEL và request ban đầu sẽ thực hiện independently, Tuy nhiên một UAC canceling không thể dựa vào việc nhận 487 (Request Terminated) response cho request ban đầu. Nếu như không có final response cho request ban đầu in 64*T1 (500ms) thì client nên hủy transaction ban đầu và hủy transaction với request ban đầu (em hiểu là lỗi không CANCEL được) 
- ## Server Behavior
- 
+- CANCEL request chỉ nên được gửi để hủy INVITE, vì các request khác thường sẽ phản hồi ngay thức thì, nếu hủy thì có thể tạo ra một race condition. 
+- Các header Request-URI, Call-ID, To, CSeq, From trong CANCEL cần phải giống với request sẽ bị hủy, kể cả tags. Và có duy nhất một *Via* header và *Via* header trên cùng trong request -> hủy đúng request. *CSeq* header thì phải là giá trị của CANCEL (đếm số lần CANCEL). 
+- Nếu ở request có *Route* header thì CANCEL cũng phải có *Route* header đó, để stateless proxy có thể hủy đúng request
+- CANCEL request thì không chứa *Require* hoặc *Proxy-Require* header. 
+- Nếu CANCEL không nhận được provisional response (1xx) thì sẽ không được gửi đi, nếu như request (muốn hủy) là nhận được final response thì CANCEL đó sẽ không được gửi đi và không ảnh hưởng tới request đó nữa. Nhưng nếu trong CANCEL có destination address, port, và transport như request thì nó cho phép server nhận CANCEL trước request ban đầu.
+- CANCEL và request ban đầu sẽ thực hiện independently, Tuy nhiên một UAC canceling không thể dựa vào việc nhận 487 (Request Terminated) response cho request ban đầu. Nếu như không có final response cho request ban đầu trong 64xT1 (500ms) thì client nên hủy transaction ban đầu và hủy transaction với request ban đầu.
+
+**Race condition in call cancellation**
+```
+   -----------                          ---------------                         ----------
+   |   UAC   |                          | Proxy Server |                        |   UAS   |
+   -----------                          ---------------                         ----------
+        |  INVITE CSeq: 1 INVITE               |                                     |
+        |------------------------------------ >|   INVITE CSeq: 1 INVITE             |
+        | 100 CSes: 1 INVITE                   |------------------------------------>|
+        |<-------------------------------------|   100 CSeq: 1 INVITE                |
+        |  CANCEL Cseq: 1 CANCEL               |<------------------------------------|
+        |------------------------------------->|   200 CSeq: 1 INVITE                |
+        |  200 CSeq: 1 CANCEl                  |<------------------------------------|
+        |<-------------------------------------|   CANCEL Cseq: 1 CANCEL             |
+        |  200 CSeq: 1 INVITE                  |------------------------------------>|
+        |<-------------------------------------|    200 CSeq: 1 CANCEL               |
+        |                                      |<------------------------------------|
+        |                               ACK CSeq: 1 ACK                              |
+        |--------------------------------------------------------------------------->|
+        |                               BYE CSeq: 21 BYE                             |
+        |<---------------------------------------------------------------------------|
+        |                               200 OK CSeq: 21 BYE                          |
+        |--------------------------------------------------------------------------->|
+        |                                                                            |
+```
+## Server Behavior
+- Transaction user xác định transaction được hủy bởi CANCEL request, và sau đó giả sử method là CANCEL hoặc ACK và áp dụng nó vào quá trình transaction matching:
+### Transaction matching
+         Một request nhận vào phải match với transaction đang tồn tại trong server. Branch trong *Via* header trên cùng của request phải bắt đầu với "z9hG4K", và request tạo bởi client transaction cho các thông số liên quan đến nó thì nó sẽ là unique so với tất cả các transactions được gửi bởi client. Nó sẽ matches nếu:
+         - *branch* của request = *branch* ở *Via* trên cùng của request tạo transaction (INVITE)
+         - *sent-by* của request = *sent-by* ở trên cùng của request tạo transaction (INVITE). Sent-by là cần thiết trong trường hợp có sự trùng lặp branch từ các clients khác nhau. 
+         - method của request = method tạo transaction (INVITE) ngoại trừ ACK. 
+         Nếu *branch* không có trong *Via* header hoặc không bắt đầu bằng magic cookie ("z9hG4K") thì nó sẽ bỏ qua và thực hiện các bước tiếp theo.
+  
+  **non-INVITE server transaction**
+```
+
+                                  |Request received
+                                  |pass to TU
+                                  V
+                            +-----------+
+                            |           |
+                            | Trying    |-------------+
+                            |           |             |
+                            +-----------+             |200-699 from TU
+                                  |                   |send response
+                                  |1xx from TU        |
+                                  |send response      |
+                                  |                   |
+               Request            V      1xx from TU  |
+               send response+-----------+send response|
+                   +--------|           |--------+    |
+                   |        | Proceeding|        |    |
+                   +------->|           |<-------+    |
+            +<--------------|           |             |
+            |Trnsprt Err    +-----------+             |
+            |Inform TU            |                   |
+            |                     |                   |
+            |                     |200-699 from TU    |
+            |                     |send response      |
+            |  Request            V                   |
+            |  send response+-----------+             |
+            |      +--------|           |             |
+            |      |        | Completed |<------------+
+            |      +------->|           |
+            +<--------------|           |
+            |Trnsprt Err    +-----------+
+            |Inform TU            |
+            |                     |Timer J fires
+            |                     |-
+            |                     |
+            |                     V
+            |               +-----------+
+            |               |           |
+            +-------------->| Terminated|
+                            |           |
+                            +-----------+
+```
+## CANCEL processing  
+Quá trình CANCEL ở server phụ thuộc vào loại server:
+- Với stateless proxy thì nó sẽ forward 
+    ### stateful proxy
+   Có thể phản hồi tới nó và tạo một vài CANCEL requests và UAS sẽ phản hồi tới nó 
+   
