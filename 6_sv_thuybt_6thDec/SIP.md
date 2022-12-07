@@ -7,8 +7,9 @@ Những điểm quan trọng của stateless UAS là:
 - một stateless UAS phải bỏ qua các ACK requests
 - một stateless UAS phải bỏ qua các CANCEL requests
 - *To* header tags phải được tạo cho response và có tag giống nhau cho các request giống nhau
-# Redirect Servers
+# Redirect Servers   
 Nó cho phép server đẩy thông tin cho một request lại trong một response tới client
+```
             ----------------                          ------------------         ------------------------  
            |Redirect Server|   <--------------------->| Registrar      |         |    Proxy Serrver     |  
             ----------------                          ------------------         ------------------------  
@@ -24,5 +25,16 @@ Nó cho phép server đẩy thông tin cho một request lại trong một respo
             |User Agent A   |   <--------------------> | User Agent B    |  
             ----------------                           -----------------  
                                6. Once invitation is accepted UAA and UAB   
-                                  can now establish a session  
+                                  can now establish a session    
+```                                  
 Một redirect server bao gồm có transaction layer và một transaction user có quyền truy cập vào location service của registrars và location services.    
+Khi redirect server trả về một 3xx response tới request (khi server từ chối request và tìm các locations thay thế từ location service) , nó sẽ tạo list locations thay thế vào *Contact* header. *Expires* trong *Contact* header có thể thêm vào *Contact* header để tính toán được lifetime của *Contact* data. *Contact* header gồm có URIs từ các location mới hoặc user names. Một 301 (Moved Permanently) hoặc 302 (Moved Temporarily) response có thể đưa tới cùng location và username từ request ban đầu nhưng thông tin transport thêm vào như server khác hoặc địa chỉ multicast để thay đỏi SIP transport từ UCP hoặc TCP và ngược lại 
+# Canceling a Request
+CANCEL request được sử dụng để cancel request trước đó được gửi bởi client. Nó sẽ yêu cầu UAS dừng quá trình request và tạo một error response cho request đó. Nó sẽ không ảnh hưởng tới các request mà UAS đã đưa ra phản hồi cuối cùng. -> CANCEL request nào mà nó chiếm nhiều thời gian để phản hồi -> phù hợp với INVITE request (tốn nhiều thời gian để thực hiện) -> có thể kết thúc cuộc gọi bằng CANCEL mà không cần đợi final response 
+1. CANCEL bởi UAC 
+   Trong trường hợp này, nếu INVITE trả về 2xx final response tới INVITE đó, thì UAS chấp nhận INVITE trong khi CANCEL vẫn đang thực hiện thì UAC sẽ tiếp tục phiên đó bởi 2xx response hoặc sẽ kết thúc bởi BYE. 
+3. CANCEL bởi proxy 
+   Một stateful proxy có thể tạo CANCEL cho cho INVITE dựa trên *Expires* khi nó hết hạn. Proxy layer tìm kiếm contexts của proxy để server transaction xử lý CANCEL. Nếu context được tìm thấy thì sẽ return 200 OK response cho CANCEL request. 
+## Client Behavior
+            CANCEL request chỉ nên được gửi để hủy INVITE, vì các request khác thường sẽ phản hồi ngay thức thì, nếu hủy thì có thể tạo ra một race condition. 
+            Các header Request-URI, Call-ID, To, CSeq, From trong CANCEL cần phải giống với request sẽ bị hủy, kể cả tags. Và có duy nhất một *Via* header
