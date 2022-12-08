@@ -124,3 +124,4 @@ Như ví dụ ở hình 10.1, quá trình đăng ký bởi proxy server trong do
 Trong truường hợp có nhiều contact được gửi ở tron REGISTER request, thì UA đăng ký sẽ có xu hướng liên kết tất cả các URI trong *Contact* header với AOR trong trường *To*. Tham số "q" biểu thị tương đối cho việc lựa chọn giá trị cụ thể nào đó trong *Contact* header. \
 Dựa vào tham số "q" quá trình sẽ thực hiện từ q lớn nhất đến q nhỏ nhất. Nếu cùng giá trị q thì thực hiện song song. (Quá trình forward sẽ được trình bày cụ thể ở section 16). \
 Giá trị "q" và "expires" chỉ được dùng trong bản tin REGISTER request hoặc response, hoặc trong bản tin 3xx response. \
+# 10.3 Processing REGISTER requests
