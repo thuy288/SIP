@@ -119,11 +119,8 @@ Trong ví dụ trên Cseq tăng từ 909056609 REGISTER lên 909056610 REGISTER
 ### 10.2.1 Adding Binding
 Như ví dụ ở hình 10.1, quá trình đăng ký bởi proxy server trong domain chicago.com và route request đó tới Carol's AOR 
 #### 10.2.1.1 Setting the Expiration Interval of Contact Addresses
+*expires* header 
 #### 10.2.1.2 Preferences among Contact Addresses
-### 10.2.2 Removing Bindings
-### 10.2.3 Fetching Bindings
-### 10.2.4 Refreshing Bindings
-### 10.2.6 Discovering a Registrar
-### 10.2.7 Transmitting a Request
-### 10.2.8 Error response
-## 10.3 Processing REGISTER Requests
+Trong truường hợp có nhiều contact được gửi ở tron REGISTER request, thì UA đăng ký sẽ có xu hướng liên kết tất cả các URI trong *Contact* header với AOR trong trường *To*. Tham số "q" biểu thị tương đối cho việc lựa chọn giá trị cụ thể nào đó trong *Contact* header. \
+Dựa vào tham số "q" quá trình sẽ thực hiện từ q lớn nhất đến q nhỏ nhất. Nếu cùng giá trị q thì thực hiện song song. (Quá trình forward sẽ được trình bày cụ thể ở section 16). \
+Giá trị "q" và "expires" chỉ được dùng trong bản tin REGISTER request hoặc response, hoặc trong bản tin 3xx response. \
