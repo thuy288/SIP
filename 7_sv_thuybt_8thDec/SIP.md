@@ -28,6 +28,8 @@ Ví dụ REGISTER
             +----+                    carol@cube2214a.chicago.com
              carol
 ```
+  Figure 10.1. REGISTER example
+
 ## 10.2 Conctructing the REGISTER request
 REGISTER requests có thể thêm binding mới giữa AOR và contact addresses \
 trong bản tin REGISTER thì không tạo dialog \
@@ -113,7 +115,9 @@ Trong ví dụ trên Cseq tăng từ 909056609 REGISTER lên 909056610 REGISTER
                        +g.3gpp.smsip
                        video
                        +g.3gpp.accesstype="cellular2"
+ - expires: tính bằng giây xác định thời gian mà UA binding có hiệu lực
 ### 10.2.1 Adding Binding
+Như ví dụ ở hình 10.1, quá trình đăng ký bởi proxy server trong domain chicago.com và route request đó tới Carol's AOR 
 #### 10.2.1.1 Setting the Expiration Interval of Contact Addresses
 #### 10.2.1.2 Preferences among Contact Addresses
 ### 10.2.2 Removing Bindings
