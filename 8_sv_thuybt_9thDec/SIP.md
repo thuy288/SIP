@@ -77,5 +77,36 @@ Nếu không có mechanism vào sẵn sàng thì registrar có thể lấy danh 
     nếu tất cả các binding không thành công thì request sẽ fail với response 500 (server error) 
   8. Regsitrar trả về 200 OK. Trong bản tin đó có Contact header gồm tất cả các binding hiện tại. 
    
+# 11. Querying the Capabilities
+method OPTIONS cho phép UA truy vấn tới UA hoặc proxy server khác, nó cho phép client tìm kiếm thông tin về supported method, content types, extensions, codex,... mà không cần ringing. 
+Mục tiêu của OPTIONS được xác định bởi Request-URI. 
+    - proxy server: Request-URI sẽ không có user part ~ REGISTER request \
+## Contruct of OPTIONS Request
+    Nó cũng được xây dựng từ các header cơ bản của SIP request
+    Các response trả lại OPTION request đó phải sử dụng Request_URI trong request ban đầu để đảm bảo rằng các request sau này sẽ được nhận bởi đúng server. \
+    Example:
+    ```
+      OPTIONS sip:carol@chicago.com SIP/2.0
+      Via: SIP/2.0/UDP pc33.atlanta.com;branch=z9hG4bKhjhs8ass877
+      Max-Forwards: 70
+      To: <sip:carol@chicago.com>
+      From: Alice <sip:alice@atlanta.com>;tag=1928301774
+      Call-ID: a84b4c76e66710
+      CSeq: 63104 OPTIONS
+      Contact: <sip:alice@pc33.atlanta.com>
+      Accept: application/sdp
+      Content-Length: 0
+    ```
+  ## Prcessing of OPTIONS requests
+      
+    
+    
+
+
+
+
+
+
+
 
 
