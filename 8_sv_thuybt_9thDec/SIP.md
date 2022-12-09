@@ -50,7 +50,32 @@ Nếu không có mechanism vào sẵn sàng thì registrar có thể lấy danh 
    remove the binding chỉ khi Cseq ở request cao hơn giá trị lưu cho binding đó
    ```
   7. Registrar xử lý mỗi địa chỉ contact trong Contact header 
-    - 
+    ```
+    expiration interval > 0 && < one hour && <= registrar-configured minimum ---------> reject - 403 (interval Too Brief) 
+    |
+    |
+    |
+    v
+    For each address, registrar tìm danh sách  -----------------> tentatively added
+    các binding đang chạy từ URI                   không tồn tại
+    |
+    |  tồn tại
+    |
+    v
+    check Call-ID trong binding đang tồn tại khác với Call-ID trong request -----------------------> removed
+    |                                                                          expiration time là 0
+    | same
+    |
+    v
+    registrar so sánh giá trị Cseq -------------------> update or remove the binding 
+    |                                  higher
+    | not higher
+    |
+    v
+    not update and the request failed
+    ```
+    nếu tất cả các binding không thành công thì request sẽ fail với response 500 (server error) 
+  8. Regsitrar trả về 200 OK. Trong bản tin đó có Contact header gồm tất cả các binding hiện tại. 
    
 
 
