@@ -89,6 +89,13 @@ initial INVITE là request ngoài một dialog. Những header sau nên có tron
       - Accept: nó xác định Content-Types nào được chấp nhận bởi UA
 UAC có thể thêm trường Expires để hạn chế trường hợp invalid trong invitation. \
 Loại hình media nào được thể hiện trong *codec*: 
+### Quá tình gửi INVITE 
+Khi INVITE được gửi qua INVITE client transaction, UAC đợi responses for INVITE đó. 
+      - Nếu INVITE client transaction return 408 (Request Timeout) 
+**1xx Response**: nếu có tag trong trường To + Dialog ID của response không match với cái đang tồn tại thì UAS bị lỗi và cần khởi động lại, hoặc nó có thể được nhận một request cho UAS khác. (như phần trên) 
+**3xx Responses**: có thể gồm 1 hoặc nhiều Contact cung cấp nhiều địa chỉ nơi có thể là người nghe. 
+**4xx, 5xx, và 6xx Response**: gồm Contact header chỉ ra được thông tin về nơi bị lỗi có thể tìm được. 
+
 
 
 
