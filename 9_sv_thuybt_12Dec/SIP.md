@@ -73,7 +73,23 @@ Với UAS: \
 * Nếu UAS muốn reject request, nó cần phải phản hồi 481 Call/Transaction does not exist và chuyển nó tới server transaction. 
 
 ## Kết thúc một Dialog 
-nếu một request ở ngoài dialog tạo non-2xx final response, bấy kỳ một dialog sớm được tạo ra provisional response (1xx) tới request đó thì sẽ được kết thúc
+nếu một request ở ngoài dialog tạo non-2xx final response, bấy kỳ một dialog sớm được tạo ra provisional response (1xx) tới request đó thì sẽ được kết thúc.
+
+# 13 Initiating a Session
+UAC muốn khởi tạo một phiên (audio, video, game). \
+INVITE requests yêu cầu server thiết lập một phiên, request đó được gửi chuyển tiếp tới proxy, rồi tới UASs. \
+UASs sẽ cần truy vấn người dùng để accept invitation bằng cách gửi 2xx response. Nếu invitation không được accept thì 3xx, 4xx, 5xx, hoặc 6xx response sẽ được gửi phụ thuộc vào nguyên nhân từ chối. \
+Trước khi gửi response cuối cùng, UAS có thể gửi 1xx response để nói với UAC về quá trình liên lạc với người được gọi. \
+Sau tất cả final response thì UAC sẽ gửi một ACK for mỗi final response mà nó nhận được. Với 2xx thì ACK tạo bởi UAC core, còn 300-699 thì quá trình tạo ACK sẽ thực hiện bởi transaction layer.  \
+-> Vì vậy có thể nói 2xx cho INVITE thiết lập một phiên. 
+## Creating the initial INVITE
+initial INVITE là request ngoài một dialog. Những header sau nên có trong bản tin INVITE \
+      - Allow: nó cho biết method vào có thể được gọi trong dialog. \
+      - Supported:  nó liệt kê tất cả các extensions được hiểu bởi UAC. \
+      - Accept: nó xác định Content-Types nào được chấp nhận bởi UA
+UAC có thể thêm trường Expires để hạn chế trường hợp invalid trong invitation. \
+Loại hình media nào được thể hiện trong *codec*: 
+
 
 
 
