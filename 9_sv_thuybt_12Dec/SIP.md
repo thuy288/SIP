@@ -24,7 +24,51 @@ Example:
       Content-Length: 274
       ```
 # 12. Dialogs
-Dialog là thể hiện của mối quan hệ peer-to-peer SIP giữa hai UA. Mỗi dialog thì được xác định bởi mỗi UA với dialog ID, gồm có CAll-ID, local tag và remote tag 
+Dialog là thể hiện của mối quan hệ peer-to-peer SIP giữa hai UA. Mỗi dialog thì được xác định bởi mỗi UA với dialog ID, gồm có CAll-ID, local tag và remote tag. \
+Một dialog được xác định bởi mỗi UA với một dialog ID, nó gồm Call-ID, local tag và remote tag. 
+Với UAC:
+      - CAll-ID (dialog ID) ~ Call-ID (message) 
+      - remote tag ~ tag (To)
+      - local tag ~ tag (From)
+Với UAS:
+      - CAll-ID(dialog ID) ~ CAll-ID (message)
+      - remote tag ~ tag (From)
+      - local tag ~ tag (To) 
+ ## Creation of a Dialog
+ Dialogs được tạo thông qua non-failure responses tới requests với specific cụ thể. Và 2xx, 109-199 responses với To tag nơi và request đã INVITE
+ ## UAS behavior
+ UAS phản hồi tới một request với response mà thiết lập một dialog (ví dụ 2xx), UAS cần phải copy tất cả Record-Route header từ request tới response. UAS thêm Contact header vào response. 
+ ## UAC Behavior
+ UAC gửi một request có thể thiết lập một dialog, nó cần phải cung cấp một SIP hoặc SIPS URI với global scope. Khi một UAC nhận một response nó thiết lập một dialog và state của dialog đó. 
+ ## Generating the Request
+ URI trong trường To của request ~ remote URI (dialog state)
+ tag (To - request) ~ remote tag (dialog ID)
+ From URI (request) ~ local URI (dialog state) 
+ tag (From-request) ~ local tag (dialog ID)
+ nếu remote hoặc local là null, thì tag được bỏ qua trong To hoặc From
+ 
+ UAC sử dụng remote target và route để build Request-URI và Route của request
+ Nếu route là empty, UAC thay remote targer URI vào Request-URI.
+ Nếu route không empty:
+      - URI đầu tiên có *lr*, UAC thay remote target
+      URI vào Request-URI và phải gồm *Route* header.
+      - URI đầu tiên không có *lr*, UAC thay URI đầu tiên từ route set thành
+      Request-URI.
+ Khi request được tạo, địa chỉ của server được tính toàn là gửi đi thro quá trình của request. 
+ ## Processing the Responses
+ UAC nhận response từ request từ transaction layer. 
+ 
+ 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 
 
 
