@@ -58,11 +58,29 @@ Với UAS: \
       Request-URI. \
  Khi request được tạo, địa chỉ của server được tính toàn là gửi đi thro quá trình của request. \
  ## Processing the Responses
- UAC nhận response từ request từ transaction layer. ----------------> 408 (Request Timeout) \
- | \
- | \
- | \
- | \
+ UAC nhận response từ request từ transaction layer. ----------------> 408 (Request Timeout) \                                            timeout
+                  | \
+                  | \
+                  | \
+ UAC nhận 2xx response để refresh request, nó thay thế                
+ dialog's remote target URI  = URI từ *Contact* trong response đó             ---------------------> 481 Call/Transaction Does not exist / 408 Request Timeout ->                                                                                                            Terminate the dialog \
+ UAS nhận request từ transaction layer, nếu request có *tag* trong To header, UAS core so sánh mã định danh của request với cái hiện đang có. \
+      - Nếu match thì nó là một mid-dialog request -> UAS áp dựng cùng quá trình
+      như cho request ở ngoài dialog
+      - Nếu không match: UAS bị lỗi và cần khởi động lại, hoặc nó có thể được nhận
+      một request cho UAS khác. 
+      -> Dựa vào To tag có thể xác định là accept hay reject request. 
+* Nếu UAS muốn reject request, nó cần phải phản hồi 481 Call/Transaction does not exist và chuyển nó tới server transaction. 
+
+## Kết thúc một Dialog 
+nếu một request ở ngoài dialog tạo non-2xx final response, bấy kỳ một dialog sớm được tạo ra provisional response (1xx) tới request đó thì sẽ được kết thúc
+
+
+
+ 
+ 
+                  
+ 
  
  
  
