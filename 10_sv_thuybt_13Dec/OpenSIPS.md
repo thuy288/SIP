@@ -1,0 +1,2 @@
+- **menuconfig**: cung cấp bởi OpenSIPS để tự động tạo file cấu hình và trả lời trên m4 để dựng file cấu hình OpenSIPS 
+- 
