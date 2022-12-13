@@ -80,7 +80,8 @@ OpensSIPS modules cho thấy những nhiệm vụ bên trong OpenSIPS script đ�
 - Failure routing blocks: xử lý các nguyên nhân dẫn đến thất bại như là: busy hoặc timeout \
 - Branch routing blocks: gồm những logix được thực thi cho mỗi branch của SIP request, trước khi chuyển tiếp nó đi \
 - Local routing blocks: thực thi khi OpenSIPS tạo một request (giống như UAS) sử dụng Transaction Module \
-- Error routing block: thực thi khi phát hiện lỗi cú pháp SIP request. 
+- Error routing block: thực thi khi phát hiện lỗi cú pháp SIP request. \
+- Ngoài ra còn có: Request route, Start up route, Event route. 
 ## Phân biệt sessions (phiên), dialogs (hộp thoại), transactions (giao dịch) 
 - SIP session: luồng media giữa hai thực thể SIP, ví dụ: audio, video, text \
 - SIP dialog: một mối liên hệ tồn tại giữa 2 thực thể SIP trong một khoảng thời gian, ví dụ: dialog được thiết lập giữa hai UAC từ bản tin INVITE đến bản tin BYE \
