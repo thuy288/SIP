@@ -115,6 +115,12 @@ Một số certain chỉ có ở stateful mode:
 
 # SUBSCRIBER MANAGEMENT
 ![image](https://user-images.githubusercontent.com/101868484/207365252-f682f147-1dc4-47f0-afb8-92e771523eb1.png)
+DB_MYSQL: drive cho database
+USRLOC: duy trì user location table và exposrts commands
+REGISTRAR: registration process
+PERMISSIONS: xác thực IP 
+ALIAS_DB: alias translation
+GROUP: quá trình xác thực
 ## AUTH_DB module: quá trình xác thực từ database
 Các parameters của module  này là: 
 ![image](https://user-images.githubusercontent.com/101868484/207370362-e5a7d267-fbe2-4a47-8947-008e287da3a5.png)
@@ -305,14 +311,73 @@ route(relay);
 ![image](https://user-images.githubusercontent.com/101868484/207402437-62309ad9-361e-4763-a227-95151c07239e.png)
 hệ thống cơ bản \
 Nó challenges UA sử dụng **nonce**. Một response hợp lệ gồm checksum của tất cả các parameters -> password không truyền đi dưới dạng simple text. \
-
 Sau khi xác thực, xóa trường Authorize từ request
-## DB_MYSQL: drive cho database
-## USRLOC: duy trì user location table và exposrts commands
-## REGISTRAR: registration process
-## PERMISSIONS: xác thực IP 
-## ALIAS_DB: alias translation
-## GROUP: quá trình xác thực
+## Analysis of the opensips.cfg file
+```
+loadmodule "db_mysql.so" #make the authentication work 
+loadmodule "auth.so"
+loadmodule "auth_db.so"
+```
+```
+modparam("auth_db", "calculate_ha1", 1) #MySQL support , calculate_ha1: tell the auth_db module to use plaintext passwords 
+modparam("usrloc", "db_mode", 2) #db_mode: tell the usrloc module to store and retrieve the AOR records
+```
+
+## The REGISTER requests
+```
+if (is_method("REGISTER"))
+  {
+    # authenticate the REGISTER requests
+    if (!www_authorize("", "subscriber"))
+   {
+      www_challenge("", "0"); #2 parameter: realm, "0": not include QOP 
+      exit;
+   }
+  if (!db_check_to())
+  {
+    sl_send_reply("403","Forbidden auth ID");
+    exit;
+  }
+  if ( proto==TCP) setflag(TCP_PERSISTENT);
+  
+  # systems lưu location data cho UAC đó
+  if (!save("location"))  
+    sl_reply_error();
+  
+  exit;
+}
+```
+## The non-REGISTER requests
+```
+if (!(is_method("REGISTER")))
+{
+  if (from_uri==myself) #handling a domain served by our proxy
+  {
+    # authenticate if from local subscribers
+    #(domain in FROM URI is local)
+    if (!proxy_authorize("", "subscriber")) { #check the authentication headers
+      proxy_challenge("", "0");
+      exit;
+    }
+    if (!db_check_from()) { #map SIP users with authentication user
+      sl_send_reply("403","Forbidden auth ID");
+      exit;
+    }
+
+    consume_credentials(); #remove thr Authorize header from request before relaying
+      # caller authenticated
+   } else {
+    # if caller is not local
+    if (!uri==myself) {
+      send_reply("403","Relay forbidden");
+      exit;
+    }
+  }
+}
+```
+
+
+
   
   
   
